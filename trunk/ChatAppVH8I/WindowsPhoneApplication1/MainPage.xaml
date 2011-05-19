@@ -1,0 +1,60 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="WindowsPhoneApplication1.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Black">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="440" />
+            <RowDefinition Height="216" />
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0">
+            <TextBlock Text="Message! Program Alpha" Width="453" />
+        </StackPanel>
+
+        <Button
+            Content="Gesprekken" 
+            Background="Green"
+            HorizontalAlignment="Stretch"  
+            VerticalAlignment="Stretch"
+            Grid.Row="1"
+            Click="btnConversations_Click"/>
+        
+        <Button
+            Content="Contacten" 
+            Background="Green"
+            HorizontalAlignment="Stretch"  
+            VerticalAlignment="Stretch"
+            Grid.Row="2"
+            Click="btnContacts_Click" />
+        
+    </Grid>
+
+    <!--Sample code showing usage of ApplicationBar-->
+   <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/" Text="Back"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Exit"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Back"/>
+                <shell:ApplicationBarMenuItem Text="Exit 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
