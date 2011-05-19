@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Database1" Class="MessageAppDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True;User Instance=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Database1ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.clients" Member="Clients">
+    <Type Name="Client">
+      <Column Name="telephone_nr" Member="TelephoneNr" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Client_message" Member="MessagesFrom" ThisKey="TelephoneNr" OtherKey="TelephoneNrFrom" Type="Message" />
+      <Association Name="Client_message1" Member="MessagesTo" ThisKey="TelephoneNr" OtherKey="TelephoneNrTo" Type="Message" />
+    </Type>
+  </Table>
+  <Table Name="dbo.messages" Member="Messages">
+    <Type Name="Message">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="to_telephone_nr" Member="TelephoneNrTo" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="from_telephone_nr" Member="TelephoneNrFrom" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="datetime" Member="Datetime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="msg_content" Member="Content" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Association Name="Client_message" Member="ClientFrom" ThisKey="TelephoneNrFrom" OtherKey="TelephoneNr" Type="Client" IsForeignKey="true" />
+      <Association Name="Client_message1" Member="ClientTo" ThisKey="TelephoneNrTo" OtherKey="TelephoneNr" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
