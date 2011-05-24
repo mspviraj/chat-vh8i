@@ -2,10 +2,17 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsPhoneClient", "WindowsPhoneApplication1\WindowsPhoneClient.csproj", "{64C4E1B1-D287-40DD-92FE-32C59D4E737D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DE6B4B2E-7344-4183-A026-FA023C4874C0} = {DE6B4B2E-7344-4183-A026-FA023C4874C0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatAppWebservice", "WcfService1\ChatAppWebservice.csproj", "{DE6B4B2E-7344-4183-A026-FA023C4874C0}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

@@ -1,0 +1,17 @@
+﻿<configuration>
+    <system.serviceModel>
+        <bindings>
+            <basicHttpBinding>
+                <binding name="HelloWorldServiceSoap" maxBufferSize="2147483647"
+                    maxReceivedMessageSize="2147483647">
+                    <security mode="None" />
+                </binding>
+            </basicHttpBinding>
+        </bindings>
+        <client>
+            <endpoint address="http://localhost:4062/Webservice.asmx" binding="basicHttpBinding"
+                bindingConfiguration="HelloWorldServiceSoap" contract="ChatAppWebservice.HelloWorldServiceSoap"
+                name="HelloWorldServiceSoap" />
+        </client>
+    </system.serviceModel>
+</configuration>
