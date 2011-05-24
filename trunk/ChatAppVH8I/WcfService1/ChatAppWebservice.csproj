@@ -58,7 +58,9 @@
       <DependentUpon>Database1.mdf</DependentUpon>
     </Content>
     <Content Include="Webservice.asmx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
