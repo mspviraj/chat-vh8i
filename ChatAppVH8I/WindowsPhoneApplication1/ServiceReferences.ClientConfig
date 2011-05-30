@@ -9,7 +9,7 @@
             </basicHttpBinding>
         </bindings>
         <client>
-            <endpoint address="http://localhost:4062/Webservice.asmx" binding="basicHttpBinding"
+            <endpoint address="http://localhost:2055/Webservice.asmx" binding="basicHttpBinding"
                 bindingConfiguration="HelloWorldServiceSoap" contract="ChatAppWebservice.HelloWorldServiceSoap"
                 name="HelloWorldServiceSoap" />
         </client>

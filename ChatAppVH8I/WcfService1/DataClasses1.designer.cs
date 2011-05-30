@@ -132,7 +132,7 @@ namespace WcfService1
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_message", Storage="_MessagesFrom", ThisKey="TelephoneNr", OtherKey="TelephoneNrFrom")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_Message", Storage="_MessagesFrom", ThisKey="TelephoneNr", OtherKey="TelephoneNrFrom")]
 		public EntitySet<Message> MessagesFrom
 		{
 			get
@@ -145,7 +145,7 @@ namespace WcfService1
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_message1", Storage="_MessagesTo", ThisKey="TelephoneNr", OtherKey="TelephoneNrTo")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_Message1", Storage="_MessagesTo", ThisKey="TelephoneNr", OtherKey="TelephoneNrTo")]
 		public EntitySet<Message> MessagesTo
 		{
 			get
@@ -346,7 +346,7 @@ namespace WcfService1
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_message", Storage="_ClientFrom", ThisKey="TelephoneNrFrom", OtherKey="TelephoneNr", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_Message", Storage="_ClientFrom", ThisKey="TelephoneNrFrom", OtherKey="TelephoneNr", IsForeignKey=true)]
 		public Client ClientFrom
 		{
 			get
@@ -380,7 +380,7 @@ namespace WcfService1
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_message1", Storage="_ClientTo", ThisKey="TelephoneNrTo", OtherKey="TelephoneNr", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Client_Message1", Storage="_ClientTo", ThisKey="TelephoneNrTo", OtherKey="TelephoneNr", IsForeignKey=true)]
 		public Client ClientTo
 		{
 			get
