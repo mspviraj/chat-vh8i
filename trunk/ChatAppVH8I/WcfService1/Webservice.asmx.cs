@@ -76,7 +76,8 @@ namespace WcfService1
             Message message = new Message();
             message.TelephoneNrTo = to;
             message.TelephoneNrFrom = from;
-            message.Datetime = DateTime.Parse(date);
+            //message.Datetime = DateTime.Parse(date);
+            message.Datetime = DateTime.Now;
             message.Content = content;
 
             // Store message object in DB
