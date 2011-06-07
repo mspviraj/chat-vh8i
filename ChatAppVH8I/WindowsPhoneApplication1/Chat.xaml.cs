@@ -15,6 +15,7 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using WindowsPhoneApplication1.ChatAppWebservice;
 using System.Threading;
+using System.Xml;
 
 namespace WindowsPhoneApplication1
 {
@@ -27,8 +28,10 @@ namespace WindowsPhoneApplication1
     {
         private HelloWorldServiceSoapClient webservice;
         private Timer messageTimer;
+        private int pullInterval = 5000;
 
-        int bla = 0;
+        //
+        private string conversationXmlPath;
 
         // TIJDELIJK
         private string myPhoneNr = "0031698765432";
@@ -42,10 +45,14 @@ namespace WindowsPhoneApplication1
             // Init webservice client
             webservice = new HelloWorldServiceSoapClient();
             webservice.get_messagesCompleted += new EventHandler<get_messagesCompletedEventArgs>(webservice_get_messagesCompleted);
+            
+            // Init conversation XML file
+            conversationXmlPath = "conversations\\conversation_" + toPhoneNr + ".xml";
+            InitConversationXmlFile();
 
             // Init the timer
             TimerCallback callback = HandleTimer;
-            messageTimer = new Timer(callback, null, 0, 1000);
+            messageTimer = new Timer(callback, null, 0, pullInterval);
         }
 
         /// <summary>
@@ -67,11 +74,6 @@ namespace WindowsPhoneApplication1
         /// <param name="e"></param>
         private void webservice_get_messagesCompleted(object sender, get_messagesCompletedEventArgs e)
         {
-            /**
-             * TODO:
-             * - Ontvangen berichten moeten nog in de isolated storage komen te staan.
-             */
-
             XElement xml = e.Result;
             IEnumerable<XElement> xmlMessages = xml.Descendants("message");
             List<Message> messages = new List<Message>();
@@ -88,30 +90,12 @@ namespace WindowsPhoneApplication1
 
             foreach (Message m in messages)
             {
-                // Toon het bericht
+                // Toon het bericht op het scherm
                 DisplayMessage(m);
+
+                // Sla het bericht op in de XML
+                StoreMessage(m);
             }
-
-            /**
-            // Dit is allemaal test code,
-            // ik was bezig om te kijken hoe je met de isolated storage XML kan opslaan.
-            XElement xml = e.Result;
-
-            IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication();
-            if (!store.DirectoryExists("Conversations"))
-            {
-                store.CreateDirectory("Conversations");
-            }
-
-            IsolatedStorageFileStream isoStream = store.OpenFile(@"Conversations\0031698765432.xml", FileMode.OpenOrCreate);
-
-            // Save to file through the stream
-            xml.Save(isoStream);
-
-            // Clean up
-            store.Dispose();
-            isoStream.Dispose();
-            */
         }
 
         /// <summary>
@@ -155,6 +139,7 @@ namespace WindowsPhoneApplication1
 
             // Display the message in the chat
             DisplayMessage(message);
+            StoreMessage(message);
         }
 
         /// <summary>
@@ -171,6 +156,7 @@ namespace WindowsPhoneApplication1
             TextBlock messsageText = new TextBlock();
             messsageText.Margin = new Thickness(4);
             messsageText.Text = message.Content;
+            messsageText.Foreground = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
 
             // Add textblock to panel
             messagePanel.Children.Add(messsageText);
@@ -178,19 +164,118 @@ namespace WindowsPhoneApplication1
             // Is this message for me?
             if (message.TelephoneNrTo == myPhoneNr)
             {
-                // YES: Display Green Left
-                messagePanel.Background = new SolidColorBrush(Colors.Green);
+                // YES:
+                messagePanel.Background = new SolidColorBrush(Colors.White);
                 messagePanel.HorizontalAlignment = HorizontalAlignment.Left;
             }
             else
             {
-                // NO: Display Yellow Right
+                // NO:
                 messagePanel.Background = new SolidColorBrush(Colors.Yellow);
                 messagePanel.HorizontalAlignment = HorizontalAlignment.Right;
             }
 
             // Display message on screen
             Messages.Children.Add(messagePanel);
+        }
+
+        private void InitConversationXmlFile()
+        {
+            IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication();
+
+            // TIJDELIJK
+            if (store.FileExists(conversationXmlPath))
+            {
+                store.DeleteFile(conversationXmlPath);
+            }
+
+            // TIJDELIJK MOET ERGENS ANDERS STAAN
+            if (!store.DirectoryExists("conversations"))
+            {
+                store.CreateDirectory("conversations");
+            }
+
+
+            if (!store.FileExists(conversationXmlPath))
+            {
+                // The is not yet a xml file for this conversation
+                // So, create a new file
+                IsolatedStorageFileStream isoStream = store.CreateFile(conversationXmlPath);
+
+                // Create XML structure
+                // and save it
+                XDocument docje = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), null);
+                docje.Add(new XElement("messages", ""));
+                docje.Save(isoStream);
+
+                // Clean up
+                isoStream.Close();
+            }
+
+            // Clean up
+            store.Dispose();
+        }
+
+        private XDocument GetCurrentXmlConversation()
+        {
+            XDocument xmlDoc = null;
+
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using (IsolatedStorageFileStream isoStream = store.OpenFile(conversationXmlPath, FileMode.Open))
+                {
+                    isoStream.Position = 0;
+                    xmlDoc = XDocument.Load(isoStream);
+                }
+            }
+
+            return xmlDoc;
+        }
+
+        private void DeleteCurrentXmlConversation()
+        {
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                store.DeleteFile(conversationXmlPath);
+            }
+        }
+
+        private void SaveXmlConversation(XDocument xmlDox)
+        {
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using (IsolatedStorageFileStream isoFileStream = store.OpenFile(conversationXmlPath, FileMode.Create))
+                {
+                    xmlDox.Save(isoFileStream);
+
+                    // TIJDELIJK (DEBUG)
+                    isoFileStream.Position = 0;
+                    byte[] bla = new byte[isoFileStream.Length];
+                    isoFileStream.Read(bla, 0, (int)isoFileStream.Length);
+                    string ssss = System.Text.Encoding.UTF8.GetString(bla, 0, bla.Length);
+                    System.Diagnostics.Debug.WriteLine(ssss);
+                }
+            }
+        }
+
+        public void StoreMessage(Message message)
+        {
+            // Get the current XML document
+            XDocument xmlDoc = GetCurrentXmlConversation();
+            DeleteCurrentXmlConversation();
+
+            // Create new message XML element
+            XElement xElMessage = new XElement("message");
+            xElMessage.Add(new XElement("to", message.TelephoneNrTo));
+            xElMessage.Add(new XElement("from", message.TelephoneNrFrom));
+            xElMessage.Add(new XElement("date", message.DateTime.ToString()));
+            xElMessage.Add(new XElement("content", message.Content));
+
+            // Add element to XML document
+            xmlDoc.Element("messages").Add(xElMessage);
+
+            // Save XML document
+            SaveXmlConversation(xmlDoc);
         }
     }
 }
