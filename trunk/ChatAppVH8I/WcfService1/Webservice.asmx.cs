@@ -59,11 +59,11 @@ namespace WcfService1
                 xmlMessages.AppendChild(xmlMessage);
 
                 // Mark message for deletion from database
-                //dc.Messages.DeleteOnSubmit(message);
+                dc.Messages.DeleteOnSubmit(message);
             }
 
             // Delete messages from database
-            //dc.SubmitChanges();
+            dc.SubmitChanges();
             
             // Return XML to caller
             return xmlDoc;

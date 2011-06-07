@@ -109,7 +109,9 @@
     <None Include="Service References\ChatAppWebservice\WindowsPhoneApplication1.ChatAppWebservice.send_messageResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <Content Include="ServiceReferences.ClientConfig" />
+    <Content Include="ServiceReferences.ClientConfig">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
